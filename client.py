@@ -1,10 +1,11 @@
 import socket
 import hashlib
 
+notConnected = True
 while notConnected is True:
     try: socket.create_connection(('localhost',3309))
-    except: socket.error
-    finally: notConnected = False
+    except: None
+
 
 def hasher(i):
     str(hashlib.sha256(str(inp).encode('utf-8')).hexdigest())
