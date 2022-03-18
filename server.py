@@ -1,39 +1,68 @@
 import socket
 import mariadb
 import sys
-inp1 = input("What is the host IP address (not port)")
-inp2 = input("what is the port?")
+import threading
+
+HEADER = 64
+PORT = 3307
+#this gets the ip address of our computer and sets it to the server variable
+SERVER = socket.gethostbyname(socket.gethostname())
+ADDR = (SERVER, PORT)
+FORMAT = 'UTF-8'
+DISCONNECT_MESSAGE = "!DISCONNECT"
+
+#allows us to open up to connections - declares it as an AF_INET, and specifies that we are using a stream
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#binds the socket to the address that we listed in the top portion
+s.bind(ADDR)
+
+def handle_client(conn, addr):
+    print(f"[new connection] {addr} connected.")
+
+    connected = True
+    while connected:
+        msg_length = conn.recv(HEADER).decode(FORMAT)
+        msg_length = int(msg_length)
+        msg = conn.recv(msg_length).decode(FORMAT)
+        if msg == DISCONNECT_MESSAGE:
+            connected = False
+        print(f"{addr} : {msg}")
+
+    conn.close()
 
 
+#initiates a connection between a singular client and stores data
+def start():
+    s.listen()
+    print(f"[listening] Server is listening on {SERVER}")
+    #this will wait until a new connection to the server occurs, and stores the address in addr, and stores info in conn
+    while True:
+        conn, addr = s.accept()
+        #when connection occurs, pass connection to handle client, give handle client the connection and address information
+        thread = threading.Thread(target=handle_client, args=(conn, addr))
+        #starts thread
+        thread.start()
+        #shows amount of active connections (-1 because of server.)
+        print(f"[active connections:] {threading.activeCount() -1}")
+print("{STARTING} server is starting")
+start()
 
-s=socket.socket()
-connected = bool
 
-def socketSetup(host,port):
-    socket.gethostname()
-    port = 3309
-    s.bind((host,port))
-    s.listen(10)
-    c, addr = s.accept()
-    print("Client connected, " + addr)
-    content = c.recv(100).decode("UTF-8")
-
-socketSetup(inp1, inp2)
 
 #initiate mariadb
-conn = mariadb.connect(
-    user="root",
-    password="a",
-    host="localhost",
-    port=3306)
+#conn = mariadb.connect(
+ #   user="root",
+  #  password="a",
+   # host="localhost",
+    #port=3306)
 
 #declaring our cursor
-cur = conn.cursor()
+#cur = conn.cursor()
 
-try:
-    cur.execute(
-    "SHOW columns FROM accounts.accounts ;")
-except: Exception
+#try:
+ #   cur.execute(
+  #  "SHOW columns FROM accounts.accounts ;")
+#except: Exception
 
 
 

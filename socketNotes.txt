@@ -1,0 +1,22 @@
+These are my notes on having a server that can handle multiple connections using socket.
+Notes/code taken from the video "Python Socket Programming Tutorial" by Tech With Tim on Youtube
+This code was stolen, but sections of said code will be used for the server setup in my "BankSystem"
+program.
+
+https://www.youtube.com/watch?v=3QiPPX-KeSc
+
+ import threading allows us to seperate code
+
+
+======= header / msg protocols =====
+
+ need to create a protocol for our program using header
+
+ line 21 "(msg = conn.recv(*int*)"
+ this is a blocking line, it requires a static variable to open up the connection, so for the
+ protocol, the first message that the client sends to the server needs to be as many bites as
+ the value of the integer "header" (declared in the second stack).
+
+ To do this we're going to "pad" or fill in a message that tells the server how many bytes the
+ next message is.
+
