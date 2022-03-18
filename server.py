@@ -4,7 +4,7 @@ import sys
 import threading
 
 HEADER = 64
-PORT = 3307
+PORT = 3305
 #this gets the ip address of our computer and sets it to the server variable
 SERVER = socket.gethostbyname(socket.gethostname())
 ADDR = (SERVER, PORT)
