@@ -16,5 +16,5 @@ for user in cur:
 joshUser = 'jw'
 jpass = 'pass'
 
-cur.execute(f"INSERT INTO accounts (username, password) VALUES ({joshUser}, {jpass})")
+cur.execute(f"INSERT INTO accounts (username, password) VALUES ('" + joshUser + "', '" + jpass + "')")
 conn.commit()
