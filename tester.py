@@ -13,8 +13,10 @@ print(cur.execute("SELECT username FROM accounts"))
 for user in cur:
     print(user)
 
-joshUser = 'jw'
-jpass = 'pass'
+userCreator('grizheman', 'hihihi', '12345')
 
-cur.execute(f"INSERT INTO accounts (username, password) VALUES ('" + joshUser + "', '" + jpass + "')")
-conn.commit()
+def userCreator(username, password, secnum):
+    cur.execute(
+    "INSERT INTO accounts(username, password, secnum) VALUES ('" + username + "', '" + password + "', '" + int(secnum) + "');"
+    )
+    conn.commit()
