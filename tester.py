@@ -4,8 +4,14 @@ conn = mariadb.connect(
     user="root",
     password="a",
     host="localhost",
-    port=3306)
+    port=3306,
+    database="accounts")
 
 cur = conn.cursor()
-type = 'username'
-print(cur.execute("SELECT username FROM accounts.accounts"))
+
+print(cur.execute("SELECT username FROM accounts"))
+for user in cur:
+    print(user)
+
+cur.execute("INSERT INTO accounts (username, password) VALUES ('joshw', 'lukrayden')")
+conn.commit()
